@@ -15,7 +15,7 @@ public class CardDeliveryServiceTest {
     void shouldSubmitRequest()  {
         open("http://localhost:9999");
 
-        $$("[type='text']").first().setValue("По русски");
+        $$("[type='text']").first().setValue("Санкт-Петербург");
 
         $("[type='tel']").setValue("05052020");
         $("[data-test-id=name] input").setValue("Петров Петр");
