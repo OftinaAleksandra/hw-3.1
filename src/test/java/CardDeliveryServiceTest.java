@@ -15,14 +15,15 @@ public class CardDeliveryServiceTest {
     void shouldSubmitRequest()  {
         open("http://localhost:9999");
 
-        $$("[type='text']").first().setValue("Казань");
+        $$("[type='text']").first().setValue("РџРѕ СЂСѓСЃСЃРєРё");
+
         $("[type='tel']").setValue("05052020");
-        $("[data-test-id=name] input").setValue("Иванов Иван");
+        $("[data-test-id=name] input").setValue("РџРµС‚СЂРѕРІ РџРµС‚СЂ");
         $("[name='phone']").setValue("+79270000000");
         $("[data-test-id=agreement]").click();
-        $ (withText("Забронировать")).click();
-        $ (withText("Успешно")).waitUntil(visible, 15000);
-        $ (withText("Встреча успешно")).waitUntil(visible, 5000);
+        $ (withText("Р—Р°Р±СЂРѕРЅРёСЂРѕРІР°С‚СЊ")).click();
+        $ (withText("РЈСЃРїРµС€РЅРѕ")).waitUntil(visible, 15000);
+        $ (withText("Р’СЃС‚СЂРµС‡Р° СѓСЃРїРµС€РЅРѕ")).waitUntil(visible, 5000);
     }
 }
 
