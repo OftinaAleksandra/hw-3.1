@@ -14,7 +14,7 @@ public class CardDeliveryServiceTest {
 
     @BeforeAll
     public static void setUp() {
-       // System.setProperty("chromeoptions.args", "--no-sandbox,--headless,--disable-dev-shm-usage");
+        System.setProperty("chromeoptions.args", "--no-sandbox,--headless,--disable-dev-shm-usage");
     }
 
     @Test
@@ -33,7 +33,7 @@ public class CardDeliveryServiceTest {
     }
 
     @Test
-    void shouldSubmitRequest()  {
+    void shouldSubmitRequest() {
         open("http://localhost:9999");
 
         $$("[type='text']").first().setValue("Ка");
