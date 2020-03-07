@@ -4,6 +4,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Calendar;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -12,24 +14,40 @@ public class CardDeliveryServiceTest {
 
     @BeforeAll
     public static void setUp() {
-        System.setProperty("chromeoptions.args", "--no-sandbox,--headless,--disable-dev-shm-usage");
+       // System.setProperty("chromeoptions.args", "--no-sandbox,--headless,--disable-dev-shm-usage");
     }
+
+    @Test
+    void shouldSubmitRequestOne() {
+        open("http://localhost:9999");
+
+        $$("[type='text']").first().setValue("Казань");
+        $("[type='tel']").setValue("15032020");
+        $("[data-test-id=name] input").setValue("Петров Петр");
+        $("[name='phone']").setValue("+79270000000");
+        $("[data-test-id=agreement]").click();
+        $(withText("Забронировать")).click();
+        $(withText("Успешно!")).waitUntil(visible, 15000);
+        $(withText("Встреча успешно")).waitUntil(visible, 5000);
+        close();
+    }
+
     @Test
     void shouldSubmitRequest()  {
         open("http://localhost:9999");
 
-
         $$("[type='text']").first().setValue("Ка");
-        $ (byText("Казань")).click();
+        $(byText("Казань")).click();
 
         selectDate(7);
 
         $("[data-test-id=name] input").setValue("Петров Петр");
         $("[name='phone']").setValue("+79270000000");
         $("[data-test-id=agreement]").click();
-        $ (withText("Забронировать")).click();
-        $ (withText("Успешно!")).waitUntil(visible, 15000);
-        $ (withText("Встреча успешно")).waitUntil(visible, 5000);
+        $(withText("Забронировать")).click();
+        $(withText("Успешно!")).waitUntil(visible, 15000);
+        $(withText("Встреча успешно")).waitUntil(visible, 5000);
+        close();
     }
 
     private void selectDate(int shift) {
@@ -51,7 +69,7 @@ public class CardDeliveryServiceTest {
 
     private void clickOnCalendar() {
         SelenideElement button = $x("//span[contains(@class, 'icon_name_calendar')]");
-        button.click();
+        button.click(); //*[@id="root"]/div/form/fieldset/div[6]/div[2]/div/button/span/span[2]
     }
 
     private void nextMonth() {
@@ -64,8 +82,9 @@ public class CardDeliveryServiceTest {
     }
 
     private int findCurrentDate(ElementsCollection calendar) {
-        SelenideElement currentDateElement = calendar.filter(cssClass("calendar__day_state_current"))
-                .first();
+        Calendar calendar1 = Calendar.getInstance();
+        int Date = calendar1.get(Calendar.DAY_OF_MONTH);
+        SelenideElement currentDateElement = $(byText(Integer.toString(Date)));
         return extractDate(currentDateElement);
     }
 
