@@ -3,12 +3,14 @@ import com.codeborne.selenide.SelenideElement;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 
 import java.util.Calendar;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
 
 public class CardDeliveryServiceTest {
 
@@ -22,33 +24,41 @@ public class CardDeliveryServiceTest {
         open("http://localhost:9999");
 
         $$("[type='text']").first().setValue("Казань");
-        $("[type='tel']").setValue("15032020");
+        clearField($("[type='tel']"));
+        $("[type='tel']").sendKeys("25032020");
         $("[data-test-id=name] input").setValue("Петров Петр");
         $("[name='phone']").setValue("+79270000000");
         $("[data-test-id=agreement]").click();
         $(withText("Забронировать")).click();
         $(withText("Успешно!")).waitUntil(visible, 15000);
         $(withText("Встреча успешно")).waitUntil(visible, 5000);
-        close();
+       $$("[role='button']").last().shouldBe(visible).click();
     }
 
     @Test
-    void shouldSubmitRequest() {
-        open("http://localhost:9999");
+    void shouldSubmitRequest() throws InterruptedException {
 
+        clearField($$("[type='text']").first());
         $$("[type='text']").first().setValue("Ка");
         $(byText("Казань")).click();
 
         selectDate(7);
 
-        $("[data-test-id=name] input").setValue("Петров Петр");
-        $("[name='phone']").setValue("+79270000000");
-        $("[data-test-id=agreement]").click();
+        clearField($("[data-test-id=name] input"));
+        $("[data-test-id=name] input").setValue("Абрамов Виктор");
+        clearField($("[name='phone']"));
+        $("[name='phone']").setValue("+79998887766");
+        $("[data-test-id=agreement]").doubleClick();
         $(withText("Забронировать")).click();
+        Thread.sleep(1000);
         $(withText("Успешно!")).waitUntil(visible, 15000);
         $(withText("Встреча успешно")).waitUntil(visible, 5000);
-        close();
     }
+
+    private void clearField(SelenideElement field) {
+        field.sendKeys(Keys.CONTROL + Keys.chord("a") + Keys.BACK_SPACE);
+    }
+
 
     private void selectDate(int shift) {
         clickOnCalendar();
