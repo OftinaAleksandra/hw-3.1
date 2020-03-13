@@ -10,7 +10,6 @@ import java.util.Calendar;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.$;
 
 public class CardDeliveryServiceTest {
 
@@ -31,8 +30,7 @@ public class CardDeliveryServiceTest {
         $("[data-test-id=agreement]").click();
         $(withText("Забронировать")).click();
         $(withText("Успешно!")).waitUntil(visible, 15000);
-        $(withText("Встреча успешно")).waitUntil(visible, 5000);
-       $$("[role='button']").last().shouldBe(visible).click();
+        $$("div>button").last().click();
     }
 
     @Test
