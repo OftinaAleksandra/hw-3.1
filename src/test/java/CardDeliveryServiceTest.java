@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import static com.codeborne.selenide.Condition.*;
@@ -24,7 +26,8 @@ public class CardDeliveryServiceTest {
 
         $$("[type='text']").first().setValue("Казань");
         clearField($("[type='tel']"));
-        $("[type='tel']").sendKeys("25032020");
+        LocalDateTime date = LocalDateTime.now().plusDays(7);
+        $("[type='tel']").sendKeys(date.format(DateTimeFormatter.ofPattern("dMMuuuu")));
         $("[data-test-id=name] input").setValue("Петров Петр");
         $("[name='phone']").setValue("+79270000000");
         $("[data-test-id=agreement]").click();
@@ -34,7 +37,7 @@ public class CardDeliveryServiceTest {
     }
 
     @Test
-    void shouldSubmitRequest() throws InterruptedException {
+    void shouldSubmitRequest() {
 
         clearField($$("[type='text']").first());
         $$("[type='text']").first().setValue("Ка");
@@ -48,7 +51,6 @@ public class CardDeliveryServiceTest {
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id=agreement]").doubleClick();
         $(withText("Забронировать")).click();
-        Thread.sleep(1000);
         $(withText("Успешно!")).waitUntil(visible, 15000);
         $(withText("Встреча успешно")).waitUntil(visible, 5000);
     }
